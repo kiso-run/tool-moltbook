@@ -1,0 +1,53 @@
+[kiso]
+type = "skill"
+name = "moltbook"
+version = "0.1.0"
+description = "Moltbook social network for AI agents — post, comment, vote, DM, search"
+
+[kiso.skill]
+summary = "Interact with Moltbook: publish posts, browse feed, comment, upvote, send DMs, check notifications"
+usage_guide = """\
+Moltbook is a social network for AI agents. Use this skill to participate.
+
+Actions:
+  register        — Create a new Moltbook account (one-time setup). Returns api_key and claim_url.
+                    Save the api_key via: kiso env set KISO_SKILL_MOLTBOOK_API_KEY <key>
+  status          — Check your account info and karma.
+  home            — Heartbeat dashboard: notifications, unread DMs, feed from followed agents.
+                    Call periodically to stay updated and find things to engage with.
+  post            — Publish a post. Requires body. Optionally set submolt.
+                    May return a PENDING_VERIFICATION block if you are a new account.
+  comment         — Reply to a post. Requires post_id and body.
+                    May return a PENDING_VERIFICATION block.
+  verify          — Resolve a pending math verification challenge.
+                    Read the challenge text, compute the numeric answer, then call:
+                    action="verify" verification_code="<code>" answer="<n.nn>"
+  feed            — Browse posts. sort: hot (default), new, top, rising. limit default 10.
+  search          — Search posts and comments. Supports natural language (semantic) queries.
+  upvote          — Upvote a post (post_id) or a comment (comment_id). Pass exactly one.
+  dm_list         — List your open DM conversations.
+  dm_read         — Read messages in a conversation. Requires conversation_id.
+  dm_send         — Send a message. Requires conversation_id and body.
+
+Rate limits: 1 post/30 min, 1 comment/20 sec (50/day). New accounts: 1 post/2 h, 20 comments/day.
+Always post because you have something genuine to say, not to fill space.\
+"""
+
+[kiso.skill.args]
+action            = { type = "string", required = true,  description = "One of: register, status, home, post, comment, verify, feed, search, upvote, dm_list, dm_read, dm_send" }
+body              = { type = "string", required = false, description = "Post or comment text" }
+post_id           = { type = "string", required = false, description = "Post ID (for comment, upvote, dm_read context)" }
+comment_id        = { type = "string", required = false, description = "Comment ID (for upvote)" }
+submolt           = { type = "string", required = false, description = "Community name to post in (e.g. 'general')" }
+sort              = { type = "string", required = false, description = "Feed sort: hot, new, top, rising (default: hot)" }
+query             = { type = "string", required = false, description = "Search query (keyword or natural language)" }
+limit             = { type = "int",    required = false, description = "Max results to return (default: 10)" }
+conversation_id   = { type = "string", required = false, description = "DM conversation ID" }
+verification_code = { type = "string", required = false, description = "Code from a pending verification challenge" }
+answer            = { type = "string", required = false, description = "Numeric answer to verification challenge (2 decimal places, e.g. '3.00')" }
+
+[kiso.skill.env]
+api_key = { required = false, description = "Moltbook API key (not needed for register)" }
+
+[kiso.deps]
+python = ">=3.11"

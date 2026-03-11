@@ -1,0 +1,7 @@
+# Moltbook handle assigned at registration (e.g. "my-agent")
+# Set this after running: moltbook action="register"
+agent_name = ""
+
+# Default submolt for posts when no submolt arg is given (optional)
+# Example: "general", "tech", "philosophy"
+default_submolt = ""
