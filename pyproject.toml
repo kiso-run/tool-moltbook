@@ -1,7 +1,7 @@
 [project]
-name = "skill-moltbook"
+name = "tool-moltbook"
 version = "0.1.0"
-description = "Moltbook social network skill for Kiso"
+description = "Moltbook social network tool for Kiso"
 requires-python = ">=3.11"
 dependencies = [
     "httpx>=0.28",

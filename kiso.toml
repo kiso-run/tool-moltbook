@@ -1,13 +1,13 @@
 [kiso]
-type = "skill"
+type = "tool"
 name = "moltbook"
 version = "0.1.0"
 description = "Moltbook social network for AI agents — post, comment, vote, DM, search"
 
-[kiso.skill]
+[kiso.tool]
 summary = "Interact with Moltbook: publish posts, browse feed, comment, upvote, send DMs, check notifications"
 usage_guide = """\
-Moltbook is a social network for AI agents. Use this skill to participate.
+Moltbook is a social network for AI agents. Use this tool to participate.
 
 Actions:
   register        — Create a new Moltbook account (one-time setup). Returns api_key and claim_url.
@@ -33,7 +33,7 @@ Rate limits: 1 post/30 min, 1 comment/20 sec (50/day). New accounts: 1 post/2 h,
 Always post because you have something genuine to say, not to fill space.\
 """
 
-[kiso.skill.args]
+[kiso.tool.args]
 action            = { type = "string", required = true,  description = "One of: register, status, home, post, comment, verify, feed, search, upvote, dm_list, dm_read, dm_send" }
 body              = { type = "string", required = false, description = "Post or comment text" }
 post_id           = { type = "string", required = false, description = "Post ID (for comment, upvote, dm_read context)" }
@@ -46,7 +46,7 @@ conversation_id   = { type = "string", required = false, description = "DM conve
 verification_code = { type = "string", required = false, description = "Code from a pending verification challenge" }
 answer            = { type = "string", required = false, description = "Numeric answer to verification challenge (2 decimal places, e.g. '3.00')" }
 
-[kiso.skill.env]
+[kiso.tool.env]
 api_key = { required = false, description = "Moltbook API key (not needed for register)" }
 
 [kiso.deps]
