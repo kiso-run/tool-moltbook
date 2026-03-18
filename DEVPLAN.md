@@ -148,8 +148,8 @@ the process exits cleanly on SIGTERM.
 - [x] **M5** — Complete test coverage
 - [x] **M6** — Functional tests (subprocess contract)
 - [x] **M7** — SIGTERM graceful shutdown test
-- [ ] **M8** — kiso.toml validation test
-- [ ] **M9** — Config error handling
+- [x] **M8** — kiso.toml validation test
+- [x] **M9** — Config error handling
 
 ### M8 — kiso.toml validation test
 
@@ -165,7 +165,7 @@ are handled in the code.
 3. Verify required TOML sections exist
 4. Verify `config.example.toml` is valid TOML (if exists)
 
-- [ ] Implement manifest validation test
+- [x] Implement manifest validation test
 
 ---
 
@@ -182,4 +182,4 @@ no test verifies behavior when the file contains invalid TOML.
 2. Call `load_config()` — should raise `tomllib.TOMLDecodeError` or be handled gracefully
 3. Test: missing config.toml → returns `{}` (already tested? verify)
 
-- [ ] Implement config error tests
+- [x] Implement config error tests
