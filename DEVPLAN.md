@@ -115,9 +115,9 @@ at the httpx transport level.
    - stdin: `{}`
    - Assert: exit code 1
 
-- [ ] Implement functional test file with mock HTTP transport
-- [ ] All 8 functional tests pass
-- [ ] Total test count verified
+- [x] Implement functional test file with mock HTTP transport
+- [x] All 8 functional tests pass
+- [x] Total test count verified
 
 ---
 
@@ -134,8 +134,8 @@ the process exits cleanly on SIGTERM.
 2. Send `SIGTERM` after 0.5s
 3. Assert: process exits 0 (graceful, not crash)
 
-- [ ] Implement SIGTERM test
-- [ ] Passes on Linux
+- [x] Implement SIGTERM test
+- [x] Passes on Linux
 
 ---
 
@@ -146,5 +146,5 @@ the process exits cleanly on SIGTERM.
 - [x] **M3** — DM actions
 - [x] **M4** — Test suite
 - [x] **M5** — Complete test coverage
-- [ ] **M6** — Functional tests (subprocess contract)
-- [ ] **M7** — SIGTERM graceful shutdown test
+- [x] **M6** — Functional tests (subprocess contract)
+- [x] **M7** — SIGTERM graceful shutdown test
