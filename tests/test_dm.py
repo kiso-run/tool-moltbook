@@ -177,3 +177,13 @@ def test_do_dm_send_missing_conv_id_exits():
 def test_do_dm_send_missing_body_exits():
     with pytest.raises(SystemExit):
         do_dm_send(MagicMock(), "cv1", "")
+
+
+def test_do_dm_send_calls_correct_api_path():
+    client = _post_client({"success": True})
+    do_dm_send(client, "cv42", "Hello!")
+    call_args = client.post.call_args
+    path = call_args[0][0]
+    assert path == "/agents/dm/conversations/cv42/send"
+    payload = call_args[1].get("json") or call_args[0][1]
+    assert payload == {"body": "Hello!"}

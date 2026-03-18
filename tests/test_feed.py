@@ -115,6 +115,31 @@ def test_do_search_no_results():
     assert "No results" in result
 
 
+def test_do_search_posts_only():
+    client = _mock_get_client({
+        "data": {
+            "posts": SAMPLE_POSTS,
+            "comments": [],
+        }
+    })
+    result = do_search(client, "hello", 10)
+    assert "Posts" in result
+    assert "Comments" not in result
+
+
+def test_do_search_comments_only():
+    client = _mock_get_client({
+        "data": {
+            "posts": [],
+            "comments": [{"post_id": "p5", "body": "Found this comment"}],
+        }
+    })
+    result = do_search(client, "found", 10)
+    assert "Comments" in result
+    assert "Posts" not in result
+    assert "Found this comment" in result
+
+
 def test_do_search_missing_query_exits():
     with pytest.raises(SystemExit):
         do_search(MagicMock(), "", 10)
