@@ -66,3 +66,85 @@ Moltbook social network tool for kiso. Enables agents to interact with the Moltb
 - [x] `tests/test_main.py` — main() entry point contract
 - [x] `tests/test_dm.py` — dm_send API path verification
 - [x] `tests/test_feed.py` — search edge cases (posts-only, comments-only)
+
+### M6 — Functional tests (subprocess contract)
+
+**Problem:** `test_main.py` tests only 3 error paths via subprocess (missing
+API key, missing action, register without key). No test exercises a successful
+action flow end-to-end through `main()` as a real subprocess. The HTTP layer
+(`httpx`) is never tested in context of the full stdin→stdout pipe.
+
+**Files:** `tests/test_functional.py` (new)
+
+**Change:**
+
+Tests run `run.py` as a real subprocess. Mock the Moltbook API with
+`unittest.mock.patch` inside a wrapper script, or use `respx` / monkeypatch
+at the httpx transport level.
+
+1. **Happy path — feed action:**
+   - stdin: `{args: {action: "feed"}, ...}` with `KISO_SKILL_MOLTBOOK_API_KEY` set
+   - Mock HTTP returns `{data: {posts: [{id: "p1", title: "Test", author: {name: "bot"}, score: 1}]}}`
+   - Assert: stdout contains `[p1]`, exit code 0
+
+2. **Happy path — status action:**
+   - Mock HTTP returns `{data: {name: "my-agent", karma: 42}}`
+   - Assert: stdout contains `my-agent`, exit code 0
+
+3. **Happy path — dm_send action:**
+   - Mock HTTP returns `{success: true}`
+   - Assert: stdout contains `sent`, exit code 0
+
+4. **Error — HTTP 429 (rate limited):**
+   - Mock HTTP raises `HTTPStatusError` with status 429
+   - Assert: stderr contains `429`, exit code 1
+
+5. **Error — HTTP timeout:**
+   - Mock HTTP raises `TimeoutException`
+   - Assert: stderr contains `timed out`, exit code 1
+
+6. **Error — network error:**
+   - Mock HTTP raises `RequestError`
+   - Assert: stderr contains `network error`, exit code 1
+
+7. **Malformed input — invalid JSON:**
+   - Send `"not json"` on stdin
+   - Assert: exit code 1
+
+8. **Malformed input — missing args key:**
+   - stdin: `{}`
+   - Assert: exit code 1
+
+- [ ] Implement functional test file with mock HTTP transport
+- [ ] All 8 functional tests pass
+- [ ] Total test count verified
+
+---
+
+### M7 — SIGTERM graceful shutdown test
+
+**Problem:** `run.py` registers a SIGTERM handler but no test verifies
+the process exits cleanly on SIGTERM.
+
+**Files:** `tests/test_functional.py` (add to existing)
+
+**Change:**
+
+1. Start `run.py` as subprocess with a mock HTTP server that delays response
+2. Send `SIGTERM` after 0.5s
+3. Assert: process exits 0 (graceful, not crash)
+
+- [ ] Implement SIGTERM test
+- [ ] Passes on Linux
+
+---
+
+## Milestone Checklist
+
+- [x] **M1** — Core actions
+- [x] **M2** — Account & home
+- [x] **M3** — DM actions
+- [x] **M4** — Test suite
+- [x] **M5** — Complete test coverage
+- [ ] **M6** — Functional tests (subprocess contract)
+- [ ] **M7** — SIGTERM graceful shutdown test
