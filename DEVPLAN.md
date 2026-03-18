@@ -148,3 +148,38 @@ the process exits cleanly on SIGTERM.
 - [x] **M5** — Complete test coverage
 - [x] **M6** — Functional tests (subprocess contract)
 - [x] **M7** — SIGTERM graceful shutdown test
+- [ ] **M8** — kiso.toml validation test
+- [ ] **M9** — Config error handling
+
+### M8 — kiso.toml validation test
+
+**Problem:** No test verifies that `kiso.toml` is valid and all declared args
+are handled in the code.
+
+**Files:** `tests/test_manifest.py` (new)
+
+**Change:**
+
+1. Parse `kiso.toml`, extract arg names from `[kiso.tool.args]`
+2. Verify each arg appears in `run.py` (via `args.get("arg_name")`)
+3. Verify required TOML sections exist
+4. Verify `config.example.toml` is valid TOML (if exists)
+
+- [ ] Implement manifest validation test
+
+---
+
+### M9 — Config error handling: malformed TOML
+
+**Problem:** `load_config()` reads `config.toml` via `tomllib.load()` but
+no test verifies behavior when the file contains invalid TOML.
+
+**Files:** `tests/test_config_errors.py` (new)
+
+**Change:**
+
+1. Create a config.toml with invalid content (e.g., `[broken`)
+2. Call `load_config()` — should raise `tomllib.TOMLDecodeError` or be handled gracefully
+3. Test: missing config.toml → returns `{}` (already tested? verify)
+
+- [ ] Implement config error tests
