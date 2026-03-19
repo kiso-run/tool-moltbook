@@ -23,7 +23,7 @@ def test_main_missing_api_key_exits(capsys):
 def test_main_missing_action_exits(capsys):
     stdin_data = json.dumps({"args": {}})
     with patch("sys.stdin", StringIO(stdin_data)), \
-         patch.dict("os.environ", {"KISO_SKILL_MOLTBOOK_API_KEY": "sk-test"}, clear=False):
+         patch.dict("os.environ", {"KISO_TOOL_MOLTBOOK_API_KEY": "sk-test"}, clear=False):
         with pytest.raises(SystemExit) as exc_info:
             main()
     assert exc_info.value.code == 1

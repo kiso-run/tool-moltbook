@@ -18,7 +18,7 @@ def _run_main(stdin_data: str, *, env_extra: dict | None = None, use_mock: str |
     """Run run.py (or mock runner) as subprocess, return (stdout, stderr, returncode)."""
     env = os.environ.copy()
     # Clear API key by default
-    env.pop("KISO_SKILL_MOLTBOOK_API_KEY", None)
+    env.pop("KISO_TOOL_MOLTBOOK_API_KEY", None)
     if env_extra:
         env.update(env_extra)
 
@@ -51,7 +51,7 @@ class TestErrorPaths:
 
     def test_missing_action(self):
         stdin = json.dumps({"args": {}})
-        stdout, stderr, rc = _run_main(stdin, env_extra={"KISO_SKILL_MOLTBOOK_API_KEY": "sk-test"})
+        stdout, stderr, rc = _run_main(stdin, env_extra={"KISO_TOOL_MOLTBOOK_API_KEY": "sk-test"})
         assert rc == 1
         assert "action" in stderr.lower()
 
@@ -61,12 +61,12 @@ class TestErrorPaths:
 
     def test_missing_args_key(self):
         stdin = json.dumps({})
-        stdout, stderr, rc = _run_main(stdin, env_extra={"KISO_SKILL_MOLTBOOK_API_KEY": "sk-test"})
+        stdout, stderr, rc = _run_main(stdin, env_extra={"KISO_TOOL_MOLTBOOK_API_KEY": "sk-test"})
         assert rc != 0
 
     def test_unknown_action(self):
         stdin = json.dumps({"args": {"action": "bogus_action"}})
-        stdout, stderr, rc = _run_main(stdin, env_extra={"KISO_SKILL_MOLTBOOK_API_KEY": "sk-test"})
+        stdout, stderr, rc = _run_main(stdin, env_extra={"KISO_TOOL_MOLTBOOK_API_KEY": "sk-test"})
         assert rc == 1
         assert "Unknown action" in stderr
 
@@ -79,7 +79,7 @@ class TestHappyPaths:
         stdin = json.dumps({"args": {"action": "feed"}})
         stdout, stderr, rc = _run_main(
             stdin,
-            env_extra={"KISO_SKILL_MOLTBOOK_API_KEY": "sk-test"},
+            env_extra={"KISO_TOOL_MOLTBOOK_API_KEY": "sk-test"},
             use_mock="feed",
         )
         assert rc == 0, f"stderr: {stderr}"
@@ -90,7 +90,7 @@ class TestHappyPaths:
         stdin = json.dumps({"args": {"action": "status"}})
         stdout, stderr, rc = _run_main(
             stdin,
-            env_extra={"KISO_SKILL_MOLTBOOK_API_KEY": "sk-test"},
+            env_extra={"KISO_TOOL_MOLTBOOK_API_KEY": "sk-test"},
             use_mock="status",
         )
         assert rc == 0, f"stderr: {stderr}"
@@ -107,7 +107,7 @@ class TestHappyPaths:
         })
         stdout, stderr, rc = _run_main(
             stdin,
-            env_extra={"KISO_SKILL_MOLTBOOK_API_KEY": "sk-test"},
+            env_extra={"KISO_TOOL_MOLTBOOK_API_KEY": "sk-test"},
             use_mock="dm_send",
         )
         assert rc == 0, f"stderr: {stderr}"
@@ -122,7 +122,7 @@ class TestHTTPErrors:
         stdin = json.dumps({"args": {"action": "feed"}})
         stdout, stderr, rc = _run_main(
             stdin,
-            env_extra={"KISO_SKILL_MOLTBOOK_API_KEY": "sk-test"},
+            env_extra={"KISO_TOOL_MOLTBOOK_API_KEY": "sk-test"},
             use_mock="http_429",
         )
         assert rc == 1
@@ -132,7 +132,7 @@ class TestHTTPErrors:
         stdin = json.dumps({"args": {"action": "feed"}})
         stdout, stderr, rc = _run_main(
             stdin,
-            env_extra={"KISO_SKILL_MOLTBOOK_API_KEY": "sk-test"},
+            env_extra={"KISO_TOOL_MOLTBOOK_API_KEY": "sk-test"},
             use_mock="timeout",
         )
         assert rc == 1
@@ -142,7 +142,7 @@ class TestHTTPErrors:
         stdin = json.dumps({"args": {"action": "feed"}})
         stdout, stderr, rc = _run_main(
             stdin,
-            env_extra={"KISO_SKILL_MOLTBOOK_API_KEY": "sk-test"},
+            env_extra={"KISO_TOOL_MOLTBOOK_API_KEY": "sk-test"},
             use_mock="network",
         )
         assert rc == 1
@@ -158,7 +158,7 @@ class TestSIGTERM:
         """Start run.py with a slow mock, send SIGTERM, verify clean exit 0."""
         stdin_data = json.dumps({"args": {"action": "feed"}})
         env = os.environ.copy()
-        env["KISO_SKILL_MOLTBOOK_API_KEY"] = "sk-test"
+        env["KISO_TOOL_MOLTBOOK_API_KEY"] = "sk-test"
 
         proc = subprocess.Popen(
             [PYTHON, MOCK_RUNNER, "slow"],

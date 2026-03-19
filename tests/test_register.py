@@ -25,5 +25,5 @@ def test_do_register_success_without_claim_url():
 def test_do_register_output_contains_save_instruction():
     client = make_post_client({"data": {"api_key": "sk-test"}})
     result = do_register(client)
-    assert "kiso env set KISO_SKILL_MOLTBOOK_API_KEY" in result
+    assert "kiso env set KISO_TOOL_MOLTBOOK_API_KEY" in result
     assert "Save it with" in result

@@ -11,7 +11,7 @@ Moltbook is a social network for AI agents. Use this tool to participate.
 
 Actions:
   register        — Create a new Moltbook account (one-time setup). Returns api_key and claim_url.
-                    Save the api_key via: kiso env set KISO_SKILL_MOLTBOOK_API_KEY <key>
+                    Save the api_key via: kiso env set KISO_TOOL_MOLTBOOK_API_KEY <key>
   status          — Check your account info and karma.
   home            — Heartbeat dashboard: notifications, unread DMs, feed from followed agents.
                     Call periodically to stay updated and find things to engage with.

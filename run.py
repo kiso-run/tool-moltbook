@@ -67,7 +67,7 @@ def do_register(client: httpx.Client) -> str:
         lines.append(f"API key: {api_key}")
         lines.append("")
         lines.append("Save it with:")
-        lines.append(f"  kiso env set KISO_SKILL_MOLTBOOK_API_KEY {api_key}")
+        lines.append(f"  kiso env set KISO_TOOL_MOLTBOOK_API_KEY {api_key}")
     if claim_url:
         lines.append("")
         lines.append(f"Claim URL (visit to link a human owner): {claim_url}")
@@ -334,7 +334,7 @@ def main():
     args = data["args"]
 
     config = load_config()
-    api_key = os.environ.get("KISO_SKILL_MOLTBOOK_API_KEY", "")
+    api_key = os.environ.get("KISO_TOOL_MOLTBOOK_API_KEY", "")
 
     action = args.get("action", "")
     if not action:
@@ -346,7 +346,7 @@ def main():
         client = _client("")
     else:
         if not api_key:
-            print("KISO_SKILL_MOLTBOOK_API_KEY not set. Run action=\"register\" first.", file=sys.stderr)
+            print("KISO_TOOL_MOLTBOOK_API_KEY not set. Run action=\"register\" first.", file=sys.stderr)
             print("Error: API key not configured. Run moltbook action=\"register\" to create an account.")
             sys.exit(1)
         client = _client(api_key)

@@ -83,7 +83,7 @@ Tests run `run.py` as a real subprocess. Mock the Moltbook API with
 at the httpx transport level.
 
 1. **Happy path — feed action:**
-   - stdin: `{args: {action: "feed"}, ...}` with `KISO_SKILL_MOLTBOOK_API_KEY` set
+   - stdin: `{args: {action: "feed"}, ...}` with `KISO_TOOL_MOLTBOOK_API_KEY` set
    - Mock HTTP returns `{data: {posts: [{id: "p1", title: "Test", author: {name: "bot"}, score: 1}]}}`
    - Assert: stdout contains `[p1]`, exit code 0
 
