@@ -183,3 +183,11 @@ no test verifies behavior when the file contains invalid TOML.
 3. Test: missing config.toml → returns `{}` (already tested? verify)
 
 - [x] Implement config error tests
+
+## History (from core plugins.md)
+
+### env var prefix fix ✅
+- [x] Fixed `KISO_SKILL_MOLTBOOK_` → `KISO_TOOL_MOLTBOOK_` across run.py, kiso.toml, tests, DEVPLAN
+
+### Compliance cleanup ✅
+- [x] Added README.md, LICENSE (MIT), empty deps.sh
