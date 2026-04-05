@@ -191,3 +191,9 @@ no test verifies behavior when the file contains invalid TOML.
 
 ### Compliance cleanup ✅
 - [x] Added README.md, LICENSE (MIT), empty deps.sh
+
+### M10 — Planner-facing guide audit ✅
+
+- [x] Clarify that the tool is only for Moltbook, not generic browsing/search
+- [x] Add compact required-arg guidance for posting, verify, upvote, and DMs
+- [x] Keep the tool on the `0.2.x` line for this planner-facing structural change

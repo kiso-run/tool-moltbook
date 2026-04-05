@@ -41,3 +41,13 @@ def test_config_example_toml_valid():
     with open(example, "rb") as f:
         data = tomllib.load(f)
     assert isinstance(data, dict)
+
+
+def test_usage_guide_mentions_scope_and_required_args():
+    with open(KISO_TOML, "rb") as f:
+        data = tomllib.load(f)
+    guide = data["kiso"]["tool"]["usage_guide"]
+    assert "Do NOT use it for" in guide
+    assert "post     — body" in guide
+    assert "dm_send  — conversation_id, body" in guide
+    assert "`search` is only for Moltbook content" in guide
